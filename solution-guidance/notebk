@@ -1,0 +1,55 @@
+
+Import libraries
+
+import pandas as pd
+from matplotlib import pyplot as plt
+from statsmodels.tsa.seasonal import STL
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+%matplotlib inline
+Read revenue data
+
+directory_output = '../data/output/'
+revenue_total = pd.read_csv(directory_output+'4 revenue_total.csv')
+Define functions
+
+def get_countries(revenue):
+    ''' Get list of all countries in dataset '''
+    return revenue.country.unique()
+def decompose_data(data, period):
+    ''' Decompose time series data into trend and seasonal components '''
+    stl = STL(data, period=period)
+    stl.fit().plot()
+Plot revenue as a function of time
+
+revenue_total.plot(x='date', y='revenue', legend=False)
+plt.draw()
+b'\r\n\r\n\r\n
+Plot trend and seasonal components of revenue using LOESS
+  File "<ipython-input-6-ba8abe8ee8fc>", line 1
+    Plot trend and seasonal components of revenue using LOESS
+         ^
+SyntaxError: invalid syntax
+stl = STL(revenue_total['revenue'], period=30)
+stl_model = stl.fit()
+stl_model.plot()
+plt.draw()
+b'\r\n\r\n\r\n
+Determine whether the revenue time series data is stationary using Augmented Dickey-Fuller unit root test
+
+adfuller_results = adfuller(revenue_total['revenue'])
+if adfuller_results[1] < 0.05:
+    print('Data is stationary')
+else:
+    print('Data is not stationary')
+Data is stationary
+Plot the autocorrelation and partial autocorrelation function of the revenue data
+
+plot_acf(revenue_total['revenue'])
+plt.draw()
+
+plot_pacf(revenue_total['revenue'])
+plt.draw()
+b'\r\n\r\n\r\n
+b'\r\n\r\n\r\n
+ 
